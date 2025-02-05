@@ -1,0 +1,12 @@
+pandas
+requests
+openpyxl
+beautifulsoup4
+lxml
+selenium
+webdriver_manager
+cryptography
+selenium-stealth
+psutil
+filelock
+portalocker

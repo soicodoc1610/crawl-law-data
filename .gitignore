@@ -1,0 +1,8 @@
+*.xlsx
+*.pyc
+.key
+config.json
+*.log
+*.png
+/downloads
+*.pkl
