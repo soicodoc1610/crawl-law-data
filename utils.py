@@ -26,6 +26,8 @@ import atexit
 import sys
 import portalocker  # Add this import for better cross-process file locking
 import contextlib
+import shutil
+
 
 def setup_logger(debug=False):
     """Setup logger with file and console output"""
@@ -300,8 +302,13 @@ def _do_download(url, filepath):
                 f.flush()
                 os.fsync(f.fileno())  # Ensure all data is written
             
-            # Atomic move to final location
-            os.replace(temp_file, filepath)
+            # Check if source and destination are on the same drive
+            if os.path.splitdrive(temp_file)[0] != os.path.splitdrive(filepath)[0]:
+                shutil.copy(temp_file, filepath)  # Copy if on different drives
+                os.remove(temp_file)  # Delete temp file
+            else:
+                os.replace(temp_file, filepath)  # Rename if on the same drive
+            
             return True, None
             
         return False, f"HTTP {response.status_code}"
